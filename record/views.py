@@ -108,6 +108,6 @@ class RecordCountView(generics.RetrieveAPIView):
             records = records.filter(country=country)
 
         record_count = records.count()
-        messages.success(request, f"{record_count} is total count")
+        messages.success(request, f"{record_count} records found for the query")
 
         return render(request,"query.html")
