@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Add Bootstrap CSS -->
+      
+    <title>Catalyst upload data</title>
+  </head>
+  
+<div class="container-fluid  d-flex  py-3"style="justify-content:space-between ">
+    <h1 class="text-start ">Users</h1>
+      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add user</button>
+    
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" 
+          action="{% url 'users' %}"
+          class="needs-validation" novalidate>
+          {% csrf_token %}
+            <div class="mb-3">
+              <label  class="form-label">Name</label>
+              <input type="name" class="form-control" id="name" placeholder="Enter Name" name="name" required>
+             <div class="invalid-feedback">
+                Please enter a valid name
+              </div>
+              </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" name="email" required>
+            
+             <div class="invalid-feedback">
+                Please enter a valid email
+              </div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                 
+                </div>
+                <div class="invalid-feedback">
+                  Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.
+                </div>
+              </div>
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+
+    </div>
+  </div>
+  <body>
+    {% if messages %}
+    <div class="app-container container-xxl">
+      <div class="alert {% for message in messages %}{% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}{% endfor %} alert-dismissible alert-outline fade show" role="alert">
+        {% for message in messages %}
+        <span {% if message.tags %} class="{{ message.tags }}" {% endif %} style="font-weight: normal;">{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Sr no.</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Active</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            {% if user.is_active == True %}
+            <td>Active</td>
+            {% else %}
+            <td>Inactive</td>
+            {% endif %}
+            <td><a href="{% url 'delete-user' user.id %}"><i class="bi bi-trash-fill" data-bs-toggle="tooltip" title="Delete"></a></i></td>
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script>
+      const myModal = document.getElementById('exampleModal')
+      const myInput = document.getElementById('myInput')
+
+      myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus()
+      })
+    </script> 
+
+    <script>
+      var alertBoxes = document.querySelectorAll(".alert");
+      alertBoxes.forEach(function (alertBox) {
+        // Set a timeout to remove the alert box after 3 seconds
+        setTimeout(function () {
+          alertBox.remove();
+        }, 3000);
+      });
+    </script>
+
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+          .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+
+              form.classList.add('was-validated')
+            }, false)
+          })
+      })()
+    </script>
+
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<div class="container-fluid position-absolute start-0  my-x">
+
+<h1>Upload Data</h1>
+{% if messages %}
+    <div class="app-container container-xxl">
+      <div class="alert {% for message in messages %}{% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}{% endfor %} alert-dismissible alert-outline fade show" role="alert">
+        {% for message in messages %}
+        <span {% if message.tags %} class="{{ message.tags }}" {% endif %} style="font-weight: normal;">{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+<form 
+    method="POST" 
+    action="{% url 'upload-data' %}"
+    class="needs-validation" 
+    enctype="multipart/form-data"
+    novalidate>
+    {% csrf_token %}
+  <div class="input-group mb-3 w-25">
+  <input type="file" class="form-control " id="inputGroupFile02" name="file">
+  
+  </div> 
+  <button type="submit" class="input-group-text bg-primary text-white mb-5" for="inputGroupFile02"> Start Upload</button>
+<form>
+
+</div>
+
+<script>
+  var alertBoxes = document.querySelectorAll(".alert");
+  alertBoxes.forEach(function (alertBox) {
+    // Set a timeout to remove the alert box after 3 seconds
+    setTimeout(function () {
+      alertBox.remove();
+    }, 3000);
+  });
+</script>
+
+{% endblock %}

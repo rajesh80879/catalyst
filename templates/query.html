@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content%}
+
+
+<div class="container">
+
+    {% if messages %}
+    <div class="app-container container-xxl">
+      <div class="alert {% for message in messages %}{% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}{% endfor %} alert-dismissible alert-outline fade show" role="alert">
+        {% for message in messages %}
+        <span {% if message.tags %} class="{{ message.tags }}" {% endif %} style="font-weight: normal;">{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+    <h1>Query Builder</h1>
+    
+    <form action="/api/record-count/" method="GET">
+        <div class="row">
+
+            <div class="col">
+                <input type="text" class="form-control" name="keyword" placeholder="Keyword">
+            </div>
+            <div class="col col-4">
+                <select class="form-select" aria-label="Default select example" name="industry">
+                    <option selected disabled>Industry</option>
+                    {% for i in industry %}
+                    <option value={{i}}>{{i}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+        
+            <div class="col col-4">
+                <select class="form-select" aria-label="Default select example" name="year">
+                    <option selected disabled>Year founded</option>
+                    {% for i in year %}
+                    <option>{{i}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+        </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <select class="form-select" aria-label="Default select example" name="city">
+                        <option selected disabled>City</option>
+                        {% for i in city %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="col col-4">
+                    <select class="form-select" aria-label="Default select example" name="state">
+                        <option selected disabled>State</option>
+                        {% for i in state %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                    <div class="col col-4">
+                        <select class="form-select" aria-label="Default select example" name="country">
+                            <option selected disabled>Country</option>
+                            {% for i in country %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+            </div>
+            {% comment %} <div class="row mt-3">
+                <div class="col col-4">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Employees(from)</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+
+                </div>
+                <div class="col col-4">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Employees(to)</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+
+                </div>
+                    
+            </div> {% endcomment %}
+            <button type="submit" class="btn btn-primary mt-2">Query</button>
+            <button type="reset" class="mt-2 btn btn-primary">Reset</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    var alertBoxes = document.querySelectorAll(".alert");
+    alertBoxes.forEach(function (alertBox) {
+      // Set a timeout to remove the alert box after 3 seconds
+      setTimeout(function () {
+        alertBox.remove();
+      }, 3000);
+    });
+  </script>
+
+{% endblock %}
